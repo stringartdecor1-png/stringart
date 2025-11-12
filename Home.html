@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arteva | Handcrafted String Art Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --off-white: #F8F9FA;
+            --light-gray: #F1F3F4;
+            --charcoal: #2D3436;
+            --accent: #6C5CE7;
+            --accent-light: #A29BFE;
+            --accent-dark: #5649C0;
+            --text: #2D3436;
+            --text-light: #636E72;
+            --border: #DFE6E9;
+            --success: #00B894;
+            --gold: #FDCB6E;
+            --error: #E74C3C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-light {
+            background-color: var(--accent-light);
+            color: var(--charcoal);
+        }
+
+        .btn-light:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            inset: 0;
+            z-index: -10;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.95;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            z-index: -9;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(162, 155, 254, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(108, 92, 231, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(253, 203, 110, 0.05) 0%, transparent 50%);
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(108, 92, 231, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 8px 0;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 150px 0 100px;
+            position: relative;
+            color: white;
+        }
+
+        .hero h1 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 3.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .categories {
+            background-color: var(--white);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            position: relative;
+            height: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
+        }
+
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-img {
+            transform: scale(1.05);
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(45, 52, 54, 0.8));
+            color: white;
+            padding: 25px;
+        }
+
+        .category-overlay h3 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .category-overlay p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 0;
+        }
+
+        .section-light {
+            background-color: var(--off-white);
+        }
+
+        .section-white {
+            background-color: var(--white);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--charcoal);
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .portrait-content, .typography-content, .painting-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .portrait-text, .typography-text, .painting-text {
+            flex: 1;
+        }
+
+        .portrait-gallery, .typography-gallery, .painting-gallery {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .portrait-item, .typography-item, .painting-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.1);
+            transition: transform 0.3s ease;
+            background: white;
+        }
+
+        .portrait-item:hover, .typography-item:hover, .painting-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .portrait-item img, .typography-item img, .painting-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-img {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.1);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.08);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .testimonial-rating {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .newsletter {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            text-align: center;
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 0 20px;
+        }
+
+        .newsletter h2 {
+            color: white;
+        }
+
+        .newsletter p {
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background-color: var(--charcoal);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #1a1e20;
+        }
+
+        footer {
+            background-color: var(--charcoal);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            transition: color 0.3s ease;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1100;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .cart-item-remove:hover {
+            color: var(--accent);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--accent-dark);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1050;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .contact-form, .checkout-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--charcoal);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .success-message {
+            background-color: var(--success);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .error-message {
+            background-color: var(--error);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .checkout-page {
+            display: none;
+            padding: 40px 0;
+        }
+
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .checkout-form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.08);
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            flex: 1;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: var(--accent);
+        }
+
+        .payment-method.active {
+            border-color: var(--accent);
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .payment-method.active .payment-icon {
+            color: var(--accent);
+        }
+
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-light);
+        }
+
+        .empty-cart i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--border);
+        }
+
+        .order-confirmation {
+            display: none;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .confirmation-icon {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 30px;
+        }
+
+        .cash-payment-info {
+            background-color: rgba(253, 203, 110, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .cash-payment-info h4 {
+            color: var(--charcoal);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cash-payment-info h4 i {
+            color: var(--gold);
+        }
+
+        .cash-instructions {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .cash-instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .cash-instructions li:before {
+            content: '•';
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 10px;
+        }
+
+        @media (max-width: 992px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .about-content, .portrait-content, .typography-content, .painting-content {
+                flex-direction: column;
+            }
+            .about-img, .about-text, .portrait-text, .portrait-gallery, .typography-text, .typography-gallery, .painting-text, .painting-gallery {
+                flex: none;
+                width: 100%;
+            }
+            .cart-sidebar { width: 320px; }
+            .form-row { flex-direction: column; gap: 0; }
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu { display: block; }
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                z-index: 999;
+                padding: 30px;
+            }
+            nav.active { left: 0; }
+            nav ul { flex-direction: column; }
+            nav ul li { margin: 0 0 20px 0; }
+            .hero { padding: 120px 0 80px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-btns { flex-direction: column; align-items: center; }
+            .newsletter-form { flex-direction: column; border-radius: 12px; }
+            .newsletter-input { border-radius: 12px 12px 0 0; margin-bottom: 0; }
+            .newsletter-btn { border-radius: 0 0 12px 12px; padding: 15px; }
+            .newsletter { margin: 0 10px; padding: 40px 20px; }
+            .portrait-gallery, .typography-gallery, .painting-gallery { grid-template-columns: 1fr; }
+            .contact-form, .checkout-form { padding: 30px 20px; }
+            .payment-methods {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            section { padding: 60px 0; }
+            .hero h1 { font-size: 2rem; }
+            .category-grid, .product-grid { grid-template-columns: 1fr; }
+            .hero { padding: 100px 0 60px; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+
+    <!-- Shopping Cart Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <span>Total:</span>
+            <span class="cart-total-value">$0.00</span>
+        </div>
+        <button class="checkout-btn" id="sidebarCheckoutBtn">Proceed to Checkout</button>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contact Us</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="contactForm" class="contact-form">
+                <div class="success-message" id="contactSuccessMessage">Thank you for your message! We'll get back to you soon.</div>
+                <div class="error-message" id="contactErrorMessage">There was an error sending your message. Please try again.</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Your Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" id="subject" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn" id="contactSubmitBtn">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo" id="homeLink">
+                <i class="fas fa-palette logo-icon"></i>
+                <span>Arteva</span>
+            </a>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#shop" class="nav-link" data-page="home">Shop</a></li>
+                    <li><a href="#portrait" class="nav-link" data-page="home">Portraits</a></li>
+                    <li><a href="#typography" class="nav-link" data-page="home">Typography</a></li>
+                    <li><a href="#painting" class="nav-link" data-page="home">Paintings</a></li>
+                    <li><a href="#about" class="nav-link" data-page="home">About</a></li>
+                    <li><a href="#" class="open-contact nav-link" data-page="home">Contact</a></li>
+                    <li class="cart-icon">
+                        <a href="#" class="open-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="homePage">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Arteva String Art</h1>
+                <p>Unique stories woven into every thread. Bring a piece of modern craftsmanship into your home.</p>
+                <div class="hero-btns">
+                    <a href="#shop" class="btn">Shop Collection</a>
+                    <a href="#" class="btn btn-light open-contact">Custom Orders</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories section-white">
+            <div class="container">
+                <h2 class="section-title">Explore Collections</h2>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Geometric Designs" class="category-img">
+                        <div class="category-overlay">
+                            <h3>Geometric Designs</h3>
+                            <p>Modern abstract patterns</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Nature Inspired" class="category-img">
+                        <div class="category-overlay">
+                            <h3>Nature Inspired</h3>
+                            <p>Floral and organic forms</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Custom Portraits" class="category-img">
+                        <div class="category-overlay">
+                            <h3>Custom Portraits</h3>
+                            <p>Personalized string art</p>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Word Art" class="category-img">
+                        <div class="category-overlay">
+                            <h3>Word Art</h3>
+                            <p>Names and inspirational quotes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section id="shop" class="section-light">
+            <div class="container">
+                <h2 class="section-title">Featured Pieces</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Geometric Harmony" class="product-img">
+                        <div class="product-info">
+                            <h3>Geometric Harmony</h3>
+                            <p class="product-price">$85.00</p>
+                            <p>A modern abstract design featuring intersecting lines and vibrant colors.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="1" data-name="Geometric Harmony" data-price="85.00" data-image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Ocean Waves" class="product-img">
+                        <div class="product-info">
+                            <h3>Ocean Waves</h3>
+                            <p class="product-price">$95.00</p>
+                            <p>Inspired by the rhythmic motion of ocean waves in shades of blue and teal.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="2" data-name="Ocean Waves" data-price="95.00" data-image="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mountain Sunrise" class="product-img">
+                        <div class="product-info">
+                            <h3>Mountain Sunrise</h3>
+                            <p class="product-price">$120.00</p>
+                            <p>A breathtaking landscape capturing the first light on mountain peaks.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="3" data-name="Mountain Sunrise" data-price="120.00" data-image="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Desert Bloom" class="product-img">
+                        <div class="product-info">
+                            <h3>Desert Bloom</h3>
+                            <p class="product-price">$75.00</p>
+                            <p>A vibrant cactus flower blooming against a minimalist desert backdrop.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="4" data-name="Desert Bloom" data-price="75.00" data-image="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section id="portrait" class="section-white">
+            <div class="container">
+                <h2 class="section-title">String Art Portraits</h2>
+                <div class="portrait-content">
+                    <div class="portrait-text">
+                        <h3>Capture Memories in String</h3>
+                        <p>Our custom string art portraits transform your cherished photos into unique works of art. Using specialized techniques, we recreate facial features, expressions, and emotions with carefully placed strings.</p>
+                        <p>Each portrait is a labor of love, taking between 20-40 hours to complete depending on complexity. We work with you to select the perfect color palette that matches your home decor and captures the essence of your subject.</p>
+                        <p>Perfect for family portraits, pet memorials, wedding gifts, or celebrating special milestones.</p>
+                        <a href="#" class="btn open-contact">Commission a Portrait</a>
+                    </div>
+                    <div class="portrait-gallery">
+                        <div class="portrait-item">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 1">
+                        </div>
+                        <div class="portrait-item">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 2">
+                        </div>
+                        <div class="portrait-item">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616c113a1d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 3">
+                        </div>
+                        <div class="portrait-item">
+                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Section -->
+        <section id="typography" class="section-light">
+            <div class="container">
+                <h2 class="section-title">String Art Typography</h2>
+                <div class="typography-content">
+                    <div class="typography-gallery">
+                        <div class="typography-item">
+                            <img src="https://images.unsplash.com/photo-1588072432839-87c6d83a0ff5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 1">
+                        </div>
+                        <div class="typography-item">
+                            <img src="https://images.unsplash.com/photo-1588072432907-624f2fdc6d65?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 2">
+                        </div>
+                        <div class="typography-item">
+                            <img src="https://images.unsplash.com/photo-1588072432836-4e983c57a4b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 3">
+                        </div>
+                        <div class="typography-item">
+                            <img src="https://images.unsplash.com/photo-1588072432836-4e983c57a4b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 4">
+                        </div>
+                    </div>
+                    <div class="typography-text">
+                        <h3>Words Woven in Art</h3>
+                        <p>Our typography collection transforms meaningful words, names, and quotes into stunning string art pieces. Each letter is meticulously crafted with precision and attention to detail.</p>
+                        <p>Choose from a variety of fonts and styles - from elegant scripts to bold modern typefaces. We can create monograms for weddings, inspirational quotes for home offices, or family names for your entryway.</p>
+                        <p>All typography pieces are fully customizable in terms of size, colors, and wording. Perfect for personalized gifts that will be treasured for years to come.</p>
+                        <a href="#" class="btn open-contact">Create Custom Text Art</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Painting Section -->
+        <section id="painting" class="section-white">
+            <div class="container">
+                <h2 class="section-title">String Art Paintings</h2>
+                <div class="painting-content">
+                    <div class="painting-text">
+                        <h3>Where String Meets Canvas</h3>
+                        <p>Our painting collection represents the intersection of traditional art forms with contemporary string techniques. These pieces blend color, texture, and form in unique ways that can't be achieved with paint alone.</p>
+                        <p>Using specialized techniques, we create depth, movement, and emotion through the strategic layering of colored strings. Each piece tells a story through its intricate patterns and carefully chosen color palettes.</p>
+                        <p>From abstract expressions to realistic landscapes, our string art paintings add a sophisticated, textural element to any space. Each piece is a one-of-a-kind creation that can't be replicated.</p>
+                        <a href="#" class="btn">Explore Paintings</a>
+                    </div>
+                    <div class="painting-gallery">
+                        <div class="painting-item">
+                            <img src="https://images.unsplash.com/photo-1579882392809-7e65362e6bb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 1">
+                        </div>
+                        <div class="painting-item">
+                            <img src="https://images.unsplash.com/photo-1578321272173-56f8691151d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 2">
+                        </div>
+                        <div class="painting-item">
+                            <img src="https://images.unsplash.com/photo-1578321272174-8708d35bb3e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 3">
+                        </div>
+                        <div class="painting-item">
+                            <img src="https://images.unsplash.com/photo-1578321272175-7c5c6c8b8b0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-light">
+            <div class="container">
+                <h2 class="section-title">Our Story</h2>
+                <div class="about-content">
+                    <div class="about-img">
+                        <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Artist at work">
+                    </div>
+                    <div class="about-text">
+                        <h3>Handcrafted with Passion</h3>
+                        <p>Hi, I'm Sarah, the artist behind Arteva. What started as a hobby in my college dorm room has evolved into a passion for creating unique, handcrafted string art pieces.</p>
+                        <p>Each piece is meticulously crafted using sustainably sourced wood and high-quality embroidery thread. I take inspiration from nature, geometry, and personal stories to create art that brings warmth and character to any space.</p>
+                        <p>My mission is to transform simple materials into captivating works of art that tell a story and create an emotional connection with their owners.</p>
+                        <a href="#" class="btn open-contact">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials section-white">
+            <div class="container">
+                <h2 class="section-title">Customer Reviews</h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I ordered a custom portrait of my daughter and it exceeded all my expectations! The attention to detail is incredible and it's become the focal point of our living room."</p>
+                        <p class="testimonial-author">- Jessica M.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <div class="container">
+                <h2>Join Our Community</h2>
+                <p>Subscribe to our newsletter for exclusive offers, new collection alerts, and behind-the-scenes content.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>Arteva</h3>
+                        <p>Handcrafted string art pieces that bring beauty and creativity to your space.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-pinterest"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Shop</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">All Products</a></li>
+                            <li><a href="#">Portraits</a></li>
+                            <li><a href="#">Typography</a></li>
+                            <li><a href="#">Paintings</a></li>
+                            <li><a href="#" class="open-contact">Custom Orders</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Support</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" class="open-contact">Contact Us</a></li>
+                            <li><a href="#">Shipping & Returns</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Care Instructions</a></li>
+                            <li><a href="#" class="open-contact">Custom Order Process</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Contact</h3>
+                        <ul class="footer-links">
+                            <li><i class="fas fa-map-marker-alt"></i> 123 Artisan Street, Creative City</li>
+                            <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                            <li><i class="fas fa-envelope"></i> string.art.decor1@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 Arteva String Art Gallery. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Checkout Page -->
+    <div class="checkout-page" id="checkoutPage">
+        <div class="container">
+            <h1>Complete Your Order</h1>
+            
+            <div class="checkout-container">
+                <!-- Checkout Form -->
+                <div class="checkout-form-container">
+                    <h2 class="section-title">Shipping Information</h2>
+                    
+                    <div class="error-message" id="checkoutErrorMessage">
+                        There was an error processing your order. Please try again.
+                    </div>
+                    
+                    <div class="success-message" id="checkoutSuccessMessage">
+                        Your order has been placed successfully! You will receive a confirmation email shortly.
+                    </div>
+                    
+                    <div class="cash-payment-info">
+                        <h4><i class="fas fa-money-bill-wave"></i> Cash Payment Only</h4>
+                        <p>We currently accept cash payments only. Please follow these instructions to complete your order:</p>
+                        <ul class="cash-instructions">
+                            <li>Complete your order details below</li>
+                            <li>We will contact you to arrange payment and delivery</li>
+                            <li>Payment is due upon delivery or pickup</li>
+                            <li>Exact change is appreciated</li>
+                        </ul>
+                    </div>
+                    
+                    <form id="checkoutForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address" class="form-label">Shipping Address</label>
+                            <textarea id="address" class="form-control" required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip" class="form-label">ZIP Code</label>
+                                <input type="text" id="zip" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes" class="form-label">Additional Notes (Optional)</label>
+                            <textarea id="notes" class="form-control" placeholder="Any special instructions or requests..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="checkoutSubmitBtn">
+                            <span class="loading" id="loadingSpinner" style="display: none;"></span>
+                            <span id="submitText">Place Order (Cash Payment)</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3 class="section-title">Your Cart</h3>
+                    
+                    <div class="cart-items">
+                        <!-- Cart items will be dynamically added here -->
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="order-summary-item">
+                            <span>Subtotal</span>
+                            <span class="subtotal-value">$0.00</span>
+                        </div>
+                        <div class="order-summary-item">
+                            <span>Shipping</span>
+                            <span>$12.00</span>
+                        </div>
+                        <div class="order-summary-item">
+                            <span>Tax</span>
+                            <span class="tax-value">$0.00</span>
+                        </div>
+                        <div class="order-summary-total">
+                            <span>Total</span>
+                            <span class="cart-total-value">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="btn btn-outline" id="backToShopping">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Page -->
+    <div class="order-confirmation" id="orderConfirmation">
+        <div class="container">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Order Confirmed!</h1>
+            <p>Thank you for your purchase. Your order has been successfully placed.</p>
+            <p>We will contact you within 24 hours to arrange payment and delivery.</p>
+            <p><strong>Payment Method: Cash Only</strong></p>
+            <p>Order ID: <strong id="orderId">ART-2023-5876</strong></p>
+            <a href="#" class="btn" id="backToHome">Back to Home</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init("tajICReQ3Led6BY7Y"); // Your public key from the dashboard
+        })();
+
+        // Cart data structure
+        let cart = [];
+        let cartTotal = 0;
+
+        // Page navigation
+        const homePage = document.getElementById('homePage');
+        const checkoutPage = document.getElementById('checkoutPage');
+        const orderConfirmation = document.getElementById('orderConfirmation');
+        
+        // Navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+        
+        document.getElementById('homeLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        document.getElementById('backToShopping').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        document.getElementById('backToHome').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        function showPage(page) {
+            homePage.style.display = 'none';
+            checkoutPage.style.display = 'none';
+            orderConfirmation.style.display = 'none';
+            
+            if (page === 'home') {
+                homePage.style.display = 'block';
+                updateCheckoutCart();
+            } else if (page === 'checkout') {
+                checkoutPage.style.display = 'block';
+                updateCheckoutCart();
+            } else if (page === 'confirmation') {
+                orderConfirmation.style.display = 'block';
+                // Generate a random order ID
+                document.getElementById('orderId').textContent = 'ART-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+            }
+            
+            // Close mobile menu if open
+            document.querySelector('nav').classList.remove('active');
+        }
+
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('nav').classList.toggle('active');
+        });
+
+        // Shopping Cart Functionality
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const overlay = document.querySelector('.overlay');
+        const openCartBtn = document.querySelector('.open-cart');
+        const closeCartBtn = document.querySelector('.close-cart');
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        const cartItemsContainer = document.querySelector('.cart-items');
+        const cartTotalValue = document.querySelector('.cart-total-value');
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        const sidebarCheckoutBtn = document.getElementById('sidebarCheckoutBtn');
+
+        // Contact Modal
+        const contactModal = document.querySelector('.contact-modal');
+        const openContactBtns = document.querySelectorAll('.open-contact');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+
+        openCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            cartSidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        closeCartBtn.addEventListener('click', function() {
+            cartSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', function() {
+            cartSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            contactModal.classList.remove('active');
+        });
+
+        // Contact Modal Functionality
+        openContactBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                contactModal.classList.add('active');
+                overlay.classList.add('active');
+            });
+        });
+
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                contactModal.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // Add to Cart Functionality
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const price = parseFloat(this.getAttribute('data-price'));
+                const image = this.getAttribute('data-image');
+                
+                // Check if item already in cart
+                const existingItem = cart.find(item => item.id === id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                showNotification(`${name} has been added to your cart!`);
+            });
+        });
+
+        // Update Cart Display
+        function updateCart() {
+            // Update cart count
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Update cart items
+            cartItemsContainer.innerHTML = '';
+            cartTotal = 0;
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p></div>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    cartTotal += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
+                            <button class="cart-item-remove" data-id="${item.id}">Remove</button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        removeFromCart(id);
+                    });
+                });
+            }
+            
+            // Update total
+            cartTotalValue.textContent = `$${cartTotal.toFixed(2)}`;
+        }
+
+        // Update Checkout Cart
+        function updateCheckoutCart() {
+            const checkoutCartItems = document.querySelector('.cart-summary .cart-items');
+            const subtotalValue = document.querySelector('.subtotal-value');
+            const taxValue = document.querySelector('.tax-value');
+            const checkoutTotalValue = document.querySelector('.cart-summary .cart-total-value');
+            
+            checkoutCartItems.innerHTML = '';
+            let subtotal = 0;
+            
+            if (cart.length === 0) {
+                checkoutCartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p></div>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
+                            <button class="cart-item-remove" data-id="${item.id}">Remove</button>
+                        </div>
+                    `;
+                    checkoutCartItems.appendChild(cartItem);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.cart-summary .cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        removeFromCart(id);
+                        updateCheckoutCart();
+                    });
+                });
+            }
+            
+            const shipping = 12.00;
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + shipping + tax;
+            
+            subtotalValue.textContent = `$${subtotal.toFixed(2)}`;
+            taxValue.textContent = `$${tax.toFixed(2)}`;
+            checkoutTotalValue.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Remove from Cart
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        // Checkout
+        checkoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Open checkout page
+            showPage('checkout');
+            cartSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        sidebarCheckoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Open checkout page
+            showPage('checkout');
+            cartSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Show Notification
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background-color: ${type === 'success' ? 'var(--success)' : 'var(--error)'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 2000;
+                transition: all 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Contact Form Submission with EmailJS
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('contactSubmitBtn');
+            const originalText = submitBtn.textContent;
+            const successMessage = document.getElementById('contactSuccessMessage');
+            const errorMessage = document.getElementById('contactErrorMessage');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+            submitBtn.disabled = true;
+            
+            // Hide previous messages
+            successMessage.classList.remove('active');
+            errorMessage.classList.remove('active');
+            
+            // Prepare email data - match template parameters exactly
+            const templateParams = {
+                name: document.getElementById('name').value,
+                from_name: document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // Send email using EmailJS with correct template ID
+            emailjs.send('service_pb7u2ox', 'template_ug72vif', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    successMessage.classList.add('active');
+                    document.getElementById('contactForm').reset();
+                    
+                    // Close modal after successful submission
+                    setTimeout(() => {
+                        contactModal.classList.remove('active');
+                        overlay.classList.remove('active');
+                        successMessage.classList.remove('active');
+                    }, 3000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    errorMessage.classList.add('active');
+                })
+                .finally(() => {
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                });
+        });
+
+        // Checkout Form Submission with EmailJS
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('checkoutSubmitBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const submitText = document.getElementById('submitText');
+            const errorMessage = document.getElementById('checkoutErrorMessage');
+            const successMessage = document.getElementById('checkoutSuccessMessage');
+            
+            // Show loading state
+            loadingSpinner.style.display = 'inline-block';
+            submitText.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            // Hide messages
+            errorMessage.classList.remove('active');
+            successMessage.classList.remove('active');
+            
+            // Prepare cart details
+            const cartDetails = cart.map(item => 
+                `${item.name} - $${item.price} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}`
+            ).join('\n');
+            
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 12.00;
+            const tax = subtotal * 0.08;
+            const total = subtotal + shipping + tax;
+            
+            // Prepare email data - match your order template parameters
+            const templateParams = {
+                name: document.getElementById('firstName').value,
+                from_name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                from_email: document.getElementById('email').value,
+                customer_phone: document.getElementById('phone').value,
+                customer_address: document.getElementById('address').value + ', ' + document.getElementById('city').value + ', ' + document.getElementById('zip').value,
+                order_items: cartDetails,
+                order_total: `$${total.toFixed(2)}`,
+                order_date: new Date().toLocaleDateString(),
+                order_items: cart.length.toString(), // if your template expects a count
+                customer_phone: document.getElementById('phone').value,
+                customer_address: document.getElementById('address').value
+            };
+            
+            // Send email using EmailJS - you need to confirm your order template ID
+            emailjs.send('service_pb7u2ox', 'template_order', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    successMessage.classList.add('active');
+                    
+                    // Clear cart
+                    cart = [];
+                    updateCart();
+                    
+                    // Redirect to confirmation page after a brief delay
+                    setTimeout(() => {
+                        showPage('confirmation');
+                    }, 2000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    errorMessage.classList.add('active');
+                })
+                .finally(() => {
+                    loadingSpinner.style.display = 'none';
+                    submitText.textContent = 'Place Order (Cash Payment)';
+                    submitBtn.disabled = false;
+                });
+        });
+
+        // Newsletter Form Submission
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('.newsletter-input').value;
+            
+            // Show loading state
+            const btn = this.querySelector('.newsletter-btn');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<span class="loading"></span> Subscribing...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                showNotification(`Thank you for subscribing with ${email}! You'll receive 10% off your first order.`);
+                this.reset();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+
+        // Simple testimonial slider
+        const testimonials = [
+            {
+                text: "I ordered a custom portrait of my daughter and it exceeded all my expectations! The attention to detail is incredible and it's become the focal point of our living room.",
+                author: "Jessica M.",
+                rating: 5
+            },
+            {
+                text: "The quality of materials and craftsmanship is outstanding. My 'Ocean Waves' piece arrived beautifully packaged and looks even better in person than in the photos.",
+                author: "Michael T.",
+                rating: 5
+            },
+            {
+                text: "Sarah created a custom portrait of my dog for my wife's birthday. It was the perfect gift - so personal and beautifully made. We'll definitely be ordering more pieces!",
+                author: "David R.",
+                rating: 5
+            }
+        ];
+
+        let currentTestimonial = 0;
+        const testimonialElement = document.querySelector('.testimonial');
+        
+        function changeTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            const testimonial = testimonials[currentTestimonial];
+            
+            let stars = '';
+            for (let i = 0; i < testimonial.rating; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            testimonialElement.innerHTML = `
+                <div class="testimonial-rating">${stars}</div>
+                <p class="testimonial-text">"${testimonial.text}"</p>
+                <p class="testimonial-author">- ${testimonial.author}</p>
+            `;
+        }
+
+        // Change testimonial every 5 seconds
+        setInterval(changeTestimonial, 5000);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('nav').classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize cart
+        updateCart();
+    </script>
+</body>
+</html>
