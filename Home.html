@@ -1937,8 +1937,10 @@
                 message: document.getElementById('message').value
             };
             
+            console.log('Sending contact email with params:', templateParams);
+            
             // Send email using EmailJS with correct template ID
-            emailjs.send('service_pb7u2ox', 'template_ug72vif', templateParams)
+            emailjs.send('service_pb7u2ox', 'template_ug72vin', templateParams)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     successMessage.classList.add('active');
@@ -1952,6 +1954,7 @@
                     }, 3000);
                 }, function(error) {
                     console.log('FAILED...', error);
+                    errorMessage.textContent = 'Error: ' + error.text;
                     errorMessage.classList.add('active');
                 })
                 .finally(() => {
@@ -2000,13 +2003,13 @@
                 order_items: cartDetails,
                 order_total: `$${total.toFixed(2)}`,
                 order_date: new Date().toLocaleDateString(),
-                order_items: cart.length.toString(), // if your template expects a count
-                customer_phone: document.getElementById('phone').value,
-                customer_address: document.getElementById('address').value
+                notes: document.getElementById('notes').value || 'No additional notes'
             };
             
-            // Send email using EmailJS - you need to confirm your order template ID
-            emailjs.send('service_pb7u2ox', 'template_order', templateParams)
+            console.log('Sending order email with params:', templateParams);
+            
+            // Send email using EmailJS - use the correct template ID
+            emailjs.send('service_pb7u2ox', 'template_ldzs779', templateParams)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     successMessage.classList.add('active');
@@ -2021,6 +2024,7 @@
                     }, 2000);
                 }, function(error) {
                     console.log('FAILED...', error);
+                    errorMessage.textContent = 'Error: ' + error.text + '. Please check your EmailJS configuration.';
                     errorMessage.classList.add('active');
                 })
                 .finally(() => {
