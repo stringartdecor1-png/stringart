@@ -7,6 +7,218 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* All previous CSS remains the same, adding new styles for galleries and planters */
+        
+        /* Product Gallery Styles */
+        .product-gallery {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .gallery-main {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-thumbnails {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        
+        .gallery-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .gallery-thumb:hover,
+        .gallery-thumb.active {
+            opacity: 1;
+            border-color: var(--accent);
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .gallery-prev {
+            left: 10px;
+        }
+        
+        .gallery-next {
+            right: 10px;
+        }
+        
+        .product-gallery:hover .gallery-nav {
+            opacity: 1;
+        }
+        
+        /* Home Planters Section Styles */
+        .planter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .planter-card {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .planter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
+        }
+        
+        .planter-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .planter-card:hover .planter-img {
+            transform: scale(1.05);
+        }
+        
+        .planter-info {
+            padding: 25px;
+        }
+        
+        .planter-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--charcoal);
+        }
+        
+        .planter-price {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Modal Gallery Styles */
+        .modal-gallery {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-gallery.active {
+            display: flex;
+        }
+        
+        .modal-gallery-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-gallery-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-gallery-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        .modal-gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .modal-gallery-prev {
+            left: 20px;
+        }
+        
+        .modal-gallery-next {
+            right: 20px;
+        }
+        
+        .modal-gallery-thumbnails {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            max-width: 80%;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        
+        .modal-gallery-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-gallery-thumb:hover,
+        .modal-gallery-thumb.active {
+            opacity: 1;
+            border: 2px solid white;
+        }
+        
+        /* Previous CSS remains unchanged */
         :root {
             --white: #FFFFFF;
             --off-white: #F8F9FA;
@@ -365,17 +577,6 @@
             box-shadow: 0 15px 35px rgba(108, 92, 231, 0.15);
         }
 
-        .product-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.05);
-        }
-
         .product-info {
             padding: 25px;
         }
@@ -392,7 +593,15 @@
             font-size: 1.3rem;
             margin-bottom: 15px;
         }
+        .old-price {
+          text-decoration: line-through;
+          color: gray;
+          margin-right: 8px;
+        }
 
+        .new-price {
+          color: #e63946; /* red for discount */
+        }
         .product-actions {
             display: flex;
             justify-content: space-between;
@@ -1085,6 +1294,12 @@
             .payment-methods {
                 flex-direction: column;
             }
+            .gallery-thumbnails {
+                flex-wrap: wrap;
+            }
+            .modal-gallery-thumbnails {
+                max-width: 95%;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1093,6 +1308,9 @@
             .category-grid, .product-grid { grid-template-columns: 1fr; }
             .hero { padding: 100px 0 60px; }
             .cart-sidebar { width: 100%; right: -100%; }
+            .gallery-nav {
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -1153,11 +1371,28 @@
         </div>
     </div>
 
+    <!-- Image Gallery Modal -->
+    <div class="modal-gallery" id="galleryModal">
+        <span class="modal-gallery-close">&times;</span>
+        <div class="modal-gallery-nav modal-gallery-prev">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="modal-gallery-content">
+            <img src="" alt="" class="modal-gallery-img" id="modalGalleryImg">
+        </div>
+        <div class="modal-gallery-nav modal-gallery-next">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="modal-gallery-thumbnails" id="modalGalleryThumbs">
+            <!-- Thumbnails will be added dynamically -->
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="#" class="logo" id="homeLink">
-                <i class="fas fa-palette logo-icon"></i>
+		    <a href="#" class="logo" id="homeLink">
+                <img src="https://i.postimg.cc/155PCYc4/icon-3.png" alt="Arteva Logo" class="logo-icon" style="height: 40px; width: auto;">
                 <span>Arteva</span>
             </a>
             <div class="mobile-menu">
@@ -1170,6 +1405,7 @@
                     <li><a href="#portrait" class="nav-link" data-page="home">Portraits</a></li>
                     <li><a href="#typography" class="nav-link" data-page="home">Typography</a></li>
                     <li><a href="#painting" class="nav-link" data-page="home">Paintings</a></li>
+                    <li><a href="#planters" class="nav-link" data-page="home">Planters</a></li>
                     <li><a href="#about" class="nav-link" data-page="home">About</a></li>
                     <li><a href="#" class="open-contact nav-link" data-page="home">Contact</a></li>
                     <li class="cart-icon">
@@ -1239,51 +1475,108 @@
             <div class="container">
                 <h2 class="section-title">Featured Pieces</h2>
                 <div class="product-grid">
+                    <!-- Product 1 -->
                     <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Geometric Harmony" class="product-img">
+                        <div class="product-gallery" data-product="1">
+                            <img src="https://i.postimg.cc/qMyJCCLG/Generated-Image-November-13-2025-5-29PM.png" alt="String Art Portraits" class="gallery-main">
+                            <button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="gallery-thumbnails">
+                                <img src="https://i.postimg.cc/qMyJCCLG/Generated-Image-November-13-2025-5-29PM.png" alt="Thumbnail 1" class="gallery-thumb active">
+                                <img src="https://i.postimg.cc/RZLnj2NH/string-art-3.png" alt="Thumbnail 2" class="gallery-thumb">
+                                <img src="https://i.postimg.cc/k4XN1qsF/Generated-Image-November-06-2025-6-35PM.png" alt="Thumbnail 3" class="gallery-thumb">
+                            </div>
+                        </div>
                         <div class="product-info">
-                            <h3>Geometric Harmony</h3>
-                            <p class="product-price">$85.00</p>
-                            <p>A modern abstract design featuring intersecting lines and vibrant colors.</p>
+                            <h3>String Art Portraits</h3>
+                            <p class="product-price">
+                                <span class="old-price">2250 EGP</span>
+                                <span class="new-price">1750 EGP</span>
+                            </p>
+                            <h3>Specification</h3>
+                            <ul>
+                                <li>50cm * 50cm</li>
+                                <li>4000 lines</li>
+                                <li>Circle </li>
+                                <li>288 pins</li>
+                            </ul><br>
                             <div class="product-actions">
-                                <a href="#" class="btn add-to-cart" data-id="1" data-name="Geometric Harmony" data-price="85.00" data-image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
-                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="#" class="btn add-to-cart" data-id="1" data-name="String Art Portraits" data-price="1750.00" data-image="https://i.postimg.cc/qMyJCCLG/Generated-Image-November-13-2025-5-29PM.png">Add to Cart</a>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Product 2 -->
                     <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Ocean Waves" class="product-img">
+                        <div class="product-gallery" data-product="2">
+                            <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Ocean Waves" class="gallery-main">
+                            <button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="gallery-thumbnails">
+                                <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 1" class="gallery-thumb active">
+                                <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 2" class="gallery-thumb">
+                                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 3" class="gallery-thumb">
+                            </div>
+                        </div>
                         <div class="product-info">
                             <h3>Ocean Waves</h3>
-                            <p class="product-price">$95.00</p>
+                            <p class="product-price">
+                                <span class="old-price">2250 EGP</span>
+                                <span class="new-price">1750 EGP</span>
+                            </p>
                             <p>Inspired by the rhythmic motion of ocean waves in shades of blue and teal.</p>
                             <div class="product-actions">
-                                <a href="#" class="btn add-to-cart" data-id="2" data-name="Ocean Waves" data-price="95.00" data-image="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
-                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="#" class="btn add-to-cart" data-id="2" data-name="Ocean Waves" data-price="1750.00" data-image="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Product 3 -->
                     <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mountain Sunrise" class="product-img">
+                        <div class="product-gallery" data-product="3">
+                            <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mountain Sunrise" class="gallery-main">
+                            <button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="gallery-thumbnails">
+                                <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 1" class="gallery-thumb active">
+                                <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 2" class="gallery-thumb">
+                                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 3" class="gallery-thumb">
+                            </div>
+                        </div>
                         <div class="product-info">
                             <h3>Mountain Sunrise</h3>
-                            <p class="product-price">$120.00</p>
+                            <p class="product-price">
+                                <span class="old-price">2250 EGP</span>
+                                <span class="new-price">1750 EGP</span>
+                            </p>
                             <p>A breathtaking landscape capturing the first light on mountain peaks.</p>
                             <div class="product-actions">
-                                <a href="#" class="btn add-to-cart" data-id="3" data-name="Mountain Sunrise" data-price="120.00" data-image="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
-                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="#" class="btn add-to-cart" data-id="3" data-name="Mountain Sunrise" data-price="1750.00" data-image="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Product 4 -->
                     <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Desert Bloom" class="product-img">
+                        <div class="product-gallery" data-product="4">
+                            <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Desert Bloom" class="gallery-main">
+                            <button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="gallery-thumbnails">
+                                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 1" class="gallery-thumb active">
+                                <img src="https://images.unsplash.com/photo-1581093458791-9d33f3e2c207?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 2" class="gallery-thumb">
+                                <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Thumbnail 3" class="gallery-thumb">
+                            </div>
+                        </div>
                         <div class="product-info">
                             <h3>Desert Bloom</h3>
-                            <p class="product-price">$75.00</p>
+                            <p class="product-price">
+                                <span class="old-price">2250 EGP</span>
+                                <span class="new-price">1750 EGP</span>
+                            </p>
                             <p>A vibrant cactus flower blooming against a minimalist desert backdrop.</p>
                             <div class="product-actions">
-                                <a href="#" class="btn add-to-cart" data-id="4" data-name="Desert Bloom" data-price="75.00" data-image="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
-                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="#" class="btn add-to-cart" data-id="4" data-name="Desert Bloom" data-price="1750.00" data-image="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
                             </div>
                         </div>
                     </div>
@@ -1294,7 +1587,7 @@
         <!-- Portrait Section -->
         <section id="portrait" class="section-white">
             <div class="container">
-                <h2 class="section-title">String Art Portraits</h2>
+                <h2 class="section-title">Arteva String Art Portraits</h2>
                 <div class="portrait-content">
                     <div class="portrait-text">
                         <h3>Capture Memories in String</h3>
@@ -1305,16 +1598,16 @@
                     </div>
                     <div class="portrait-gallery">
                         <div class="portrait-item">
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 1">
+                            <img src="https://i.postimg.cc/RZLnj2NH/string-art-3.png" alt="Portrait Example 1">
                         </div>
                         <div class="portrait-item">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 2">
+                            <img src="https://i.postimg.cc/k4XN1qsF/Generated-Image-November-06-2025-6-35PM.png" alt="Portrait Example 2">
                         </div>
                         <div class="portrait-item">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616c113a1d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 3">
+                            <img src="https://i.postimg.cc/25rxP4GP/string-art-4.png" alt="Portrait Example 3">
                         </div>
                         <div class="portrait-item">
-                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Portrait Example 4">
+                            <img src="https://i.postimg.cc/MGGntV8J/string-art-5.png" alt="Portrait Example 4">
                         </div>
                     </div>
                 </div>
@@ -1324,20 +1617,20 @@
         <!-- Typography Section -->
         <section id="typography" class="section-light">
             <div class="container">
-                <h2 class="section-title">String Art Typography</h2>
+                <h2 class="section-title">Arteva String Art Typography</h2>
                 <div class="typography-content">
                     <div class="typography-gallery">
                         <div class="typography-item">
-                            <img src="https://images.unsplash.com/photo-1588072432839-87c6d83a0ff5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 1">
+                            <img src="https://i.postimg.cc/bwzZHsdG/fad5ae7a-2157-424c-977f-4c9276a2aa49-a690dfedda15d3a641087524812a8c7e.webp" alt="Typography Example 1">
                         </div>
                         <div class="typography-item">
-                            <img src="https://images.unsplash.com/photo-1588072432907-624f2fdc6d65?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 2">
+                            <img src="https://i.postimg.cc/sxsmR53Y/IMG-1681.webp" alt="Typography Example 2">
                         </div>
                         <div class="typography-item">
-                            <img src="https://images.unsplash.com/photo-1588072432836-4e983c57a4b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 3">
+                            <img src="https://i.postimg.cc/QCGtBMvv/71tvpf86x-LL-AC-UF894-1000-QL80.jpg" alt="Typography Example 3">
                         </div>
                         <div class="typography-item">
-                            <img src="https://images.unsplash.com/photo-1588072432836-4e983c57a4b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Typography Example 4">
+                            <img src="https://i.postimg.cc/tgJ7wwhD/il-570x-N-3192789150-mt2j.webp" alt="Typography Example 4">
                         </div>
                     </div>
                     <div class="typography-text">
@@ -1354,7 +1647,7 @@
         <!-- Painting Section -->
         <section id="painting" class="section-white">
             <div class="container">
-                <h2 class="section-title">String Art Paintings</h2>
+                <h2 class="section-title">Arteva Paintings</h2>
                 <div class="painting-content">
                     <div class="painting-text">
                         <h3>Where String Meets Canvas</h3>
@@ -1365,16 +1658,88 @@
                     </div>
                     <div class="painting-gallery">
                         <div class="painting-item">
-                            <img src="https://images.unsplash.com/photo-1579882392809-7e65362e6bb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 1">
+                            <img src="https://i.postimg.cc/5ygfT9vy/Beautiful-simple-wall-painting-1.png" alt="Painting Example 1">
                         </div>
                         <div class="painting-item">
-                            <img src="https://images.unsplash.com/photo-1578321272173-56f8691151d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 2">
+                            <img src="https://i.postimg.cc/vBR86Nb8/kalakshya-nature-inspired-golden-leaf-canvas-paintings-for-living-room-bedroom-wall-decor-canvas-wal.webp" alt="Painting Example 2">
                         </div>
                         <div class="painting-item">
-                            <img src="https://images.unsplash.com/photo-1578321272174-8708d35bb3e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 3">
+                            <img src="https://i.postimg.cc/DyfvsskH/gallery-wall-idea-paintings.webp" alt="Painting Example 3">
                         </div>
                         <div class="painting-item">
-                            <img src="https://images.unsplash.com/photo-1578321272175-7c5c6c8b8b0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Painting Example 4">
+                            <img src="https://i.postimg.cc/T1d6V8sF/Kotart-Modern-Abstract-Art-Paintings-for-Living-Room-Bedroom-Wall-Decor-Paintings-for-Home-Decor-2.webp" alt="Painting Example 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home Planters Collection -->
+        <section id="planters" class="section-light">
+            <div class="container">
+                <h2 class="section-title">Home Planters Collection</h2>
+                <div class="planter-grid">
+                    <!-- Planter 1 -->
+                    <div class="planter-card">
+                        <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Ceramic Planter" class="planter-img">
+                        <div class="planter-info">
+                            <h3>Ceramic Planter Set</h3>
+                            <p class="planter-price">
+                                <span class="old-price">1200 EGP</span>
+                                <span class="new-price">950 EGP</span>
+                            </p>
+                            <p>Handcrafted ceramic planters with unique glaze patterns. Perfect for succulents and small houseplants.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="5" data-name="Ceramic Planter Set" data-price="950.00" data-image="https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Planter 2 -->
+                    <div class="planter-card">
+                        <img src="https://images.unsplash.com/photo-1594736797933-d0c1382c7e1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Macrame Hanger" class="planter-img">
+                        <div class="planter-info">
+                            <h3>Macrame Plant Hanger</h3>
+                            <p class="planter-price">
+                                <span class="old-price">800 EGP</span>
+                                <span class="new-price">650 EGP</span>
+                            </p>
+                            <p>Beautifully hand-knotted macrame plant hanger with wooden beads. Adds bohemian charm to any space.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="6" data-name="Macrame Plant Hanger" data-price="650.00" data-image="https://images.unsplash.com/photo-1594736797933-d0c1382c7e1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Planter 3 -->
+                    <div class="planter-card">
+                        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Geometric Planter" class="planter-img">
+                        <div class="planter-info">
+                            <h3>Geometric Cement Planter</h3>
+                            <p class="planter-price">
+                                <span class="old-price">1100 EGP</span>
+                                <span class="new-price">850 EGP</span>
+                            </p>
+                            <p>Modern geometric cement planter with clean lines. Ideal for contemporary interior designs.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="7" data-name="Geometric Cement Planter" data-price="850.00" data-image="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Planter 4 -->
+                    <div class="planter-card">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Hanging Glass Terrarium" class="planter-img">
+                        <div class="planter-info">
+                            <h3>Hanging Glass Terrarium</h3>
+                            <p class="planter-price">
+                                <span class="old-price">1500 EGP</span>
+                                <span class="new-price">1200 EGP</span>
+                            </p>
+                            <p>Elegant glass terrarium for air plants or small succulents. Creates a miniature ecosystem in your home.</p>
+                            <div class="product-actions">
+                                <a href="#" class="btn add-to-cart" data-id="8" data-name="Hanging Glass Terrarium" data-price="1200.00" data-image="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">Add to Cart</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1440,10 +1805,10 @@
                         <h3>Arteva</h3>
                         <p>Handcrafted string art pieces that bring beauty and creativity to your space.</p>
                         <div class="social-links">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.instagram.com/arteva71/"><i class="fab fa-instagram"></i></a>
                             <a href="#"><i class="fab fa-pinterest"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://www.facebook.com/profile.php?id=61583874025522"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.tiktok.com/@string.art.decor"><i class="fab fa-tiktok"></i></a>
                         </div>
                     </div>
                     <div class="footer-column">
@@ -1453,6 +1818,7 @@
                             <li><a href="#">Portraits</a></li>
                             <li><a href="#">Typography</a></li>
                             <li><a href="#">Paintings</a></li>
+                            <li><a href="#">Planters</a></li>
                             <li><a href="#" class="open-contact">Custom Orders</a></li>
                         </ul>
                     </div>
@@ -1469,7 +1835,7 @@
                     <div class="footer-column">
                         <h3>Contact</h3>
                         <ul class="footer-links">
-                            <li><i class="fas fa-map-marker-alt"></i> 123 Artisan Street, Creative City</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Online</li>
                             <li><i class="fas fa-phone"></i> (555) 123-4567</li>
                             <li><i class="fas fa-envelope"></i> string.art.decor1@gmail.com</li>
                         </ul>
@@ -1692,6 +2058,14 @@
         const openContactBtns = document.querySelectorAll('.open-contact');
         const closeModalBtns = document.querySelectorAll('.close-modal');
 
+        // Gallery Modal
+        const galleryModal = document.getElementById('galleryModal');
+        const modalGalleryImg = document.getElementById('modalGalleryImg');
+        const modalGalleryThumbs = document.getElementById('modalGalleryThumbs');
+        const modalGalleryClose = document.querySelector('.modal-gallery-close');
+        const modalGalleryPrev = document.querySelector('.modal-gallery-prev');
+        const modalGalleryNext = document.querySelector('.modal-gallery-next');
+
         openCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
             cartSidebar.classList.add('active');
@@ -1707,6 +2081,7 @@
             cartSidebar.classList.remove('active');
             overlay.classList.remove('active');
             contactModal.classList.remove('active');
+            galleryModal.classList.remove('active');
         });
 
         // Contact Modal Functionality
@@ -2053,6 +2428,128 @@
                 btn.disabled = false;
             }, 1500);
         });
+
+        // Product Gallery Functionality
+        document.querySelectorAll('.product-gallery').forEach(gallery => {
+            const mainImg = gallery.querySelector('.gallery-main');
+            const thumbs = gallery.querySelectorAll('.gallery-thumb');
+            const prevBtn = gallery.querySelector('.gallery-prev');
+            const nextBtn = gallery.querySelector('.gallery-next');
+            
+            let currentIndex = 0;
+            
+            // Thumbnail click event
+            thumbs.forEach((thumb, index) => {
+                thumb.addEventListener('click', function() {
+                    // Update main image
+                    mainImg.src = this.src;
+                    
+                    // Update active thumbnail
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentIndex = index;
+                });
+            });
+            
+            // Previous button click event
+            prevBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
+                updateGallery();
+            });
+            
+            // Next button click event
+            nextBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                currentIndex = (currentIndex + 1) % thumbs.length;
+                updateGallery();
+            });
+            
+            // Main image click event to open modal
+            mainImg.addEventListener('click', function() {
+                openGalleryModal(thumbs, currentIndex);
+            });
+            
+            function updateGallery() {
+                mainImg.src = thumbs[currentIndex].src;
+                thumbs.forEach(t => t.classList.remove('active'));
+                thumbs[currentIndex].classList.add('active');
+            }
+        });
+        
+        // Modal Gallery Functionality
+        function openGalleryModal(thumbs, startIndex) {
+            // Set the main image
+            modalGalleryImg.src = thumbs[startIndex].src;
+            
+            // Clear and populate thumbnails
+            modalGalleryThumbs.innerHTML = '';
+            thumbs.forEach((thumb, index) => {
+                const thumbImg = document.createElement('img');
+                thumbImg.src = thumb.src;
+                thumbImg.alt = thumb.alt;
+                thumbImg.className = 'modal-gallery-thumb';
+                if (index === startIndex) {
+                    thumbImg.classList.add('active');
+                }
+                
+                thumbImg.addEventListener('click', function() {
+                    modalGalleryImg.src = this.src;
+                    document.querySelectorAll('.modal-gallery-thumb').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentModalIndex = index;
+                });
+                
+                modalGalleryThumbs.appendChild(thumbImg);
+            });
+            
+            // Show modal
+            galleryModal.classList.add('active');
+            overlay.classList.add('active');
+            
+            // Set current index
+            let currentModalIndex = startIndex;
+            
+            // Navigation events
+            modalGalleryPrev.addEventListener('click', function() {
+                currentModalIndex = (currentModalIndex - 1 + thumbs.length) % thumbs.length;
+                updateModalGallery(thumbs, currentModalIndex);
+            });
+            
+            modalGalleryNext.addEventListener('click', function() {
+                currentModalIndex = (currentModalIndex + 1) % thumbs.length;
+                updateModalGallery(thumbs, currentModalIndex);
+            });
+            
+            // Close modal events
+            modalGalleryClose.addEventListener('click', function() {
+                galleryModal.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (galleryModal.classList.contains('active')) {
+                    if (e.key === 'ArrowLeft') {
+                        currentModalIndex = (currentModalIndex - 1 + thumbs.length) % thumbs.length;
+                        updateModalGallery(thumbs, currentModalIndex);
+                    } else if (e.key === 'ArrowRight') {
+                        currentModalIndex = (currentModalIndex + 1) % thumbs.length;
+                        updateModalGallery(thumbs, currentModalIndex);
+                    } else if (e.key === 'Escape') {
+                        galleryModal.classList.remove('active');
+                        overlay.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        function updateModalGallery(thumbs, index) {
+            modalGalleryImg.src = thumbs[index].src;
+            document.querySelectorAll('.modal-gallery-thumb').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.modal-gallery-thumb')[index].classList.add('active');
+        }
 
         // Simple testimonial slider
         const testimonials = [
