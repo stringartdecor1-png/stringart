@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Pin Sequence Viewer</title>
     <style>
         * {
@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -19,7 +20,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
+            -webkit-font-smoothing: antialiased;
         }
         
         .container {
@@ -27,59 +29,70 @@
             width: 100%;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-top: 20px;
+            margin-top: 10px;
         }
         
         h1 {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
         }
         
         .subtitle {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #ddd;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            padding: 0 10px;
         }
         
         .upload-section {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
+            padding: 15px;
+            margin-bottom: 20px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .upload-section h3 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #fdbb2d;
+            font-size: 1.2rem;
         }
         
         .file-input-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .file-input-label {
             background: linear-gradient(to right, #1a2a6c, #4a54e1);
             color: white;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             display: inline-block;
+            font-size: 1rem;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 140px;
         }
         
-        .file-input-label:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        .file-input-label:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         #file-input {
@@ -87,18 +100,20 @@
         }
         
         .file-info {
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            font-size: 0.85rem;
             color: #aaa;
+            word-break: break-all;
+            padding: 0 5px;
         }
         
         .display-area {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
             text-align: center;
-            min-height: 120px;
+            min-height: 110px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -107,55 +122,56 @@
         }
         
         .current-value {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 8px 0;
             color: #fdbb2d;
             text-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+            line-height: 1.2;
         }
         
         .mapped-value {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 8px 0;
             color: #4a54e1;
             text-shadow: 0 0 10px rgba(74, 84, 225, 0.5);
         }
         
         .position-info {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #aaa;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         .controls {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            gap: 10px;
         }
         
         button {
             background: linear-gradient(to right, #1a2a6c, #b21f1f);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 14px 20px;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            min-height: 50px;
+            flex: 1;
+            touch-action: manipulation;
         }
         
         button:active {
-            transform: translateY(1px);
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         
         button:disabled {
@@ -163,6 +179,7 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+            opacity: 0.6;
         }
         
         .prev-btn {
@@ -175,47 +192,67 @@
         
         .jump-controls {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .jump-input-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
         }
         
         .jump-controls input {
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             border: none;
-            width: 80px;
+            flex: 1;
             text-align: center;
             font-size: 1rem;
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        #jump-btn {
+            min-width: 140px;
+            padding: 12px 20px;
         }
         
         .history {
-            margin-top: 30px;
+            margin-top: 25px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 20px;
-            max-height: 200px;
+            padding: 15px;
+            max-height: 180px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .history h3 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
             color: #fdbb2d;
+            font-size: 1.2rem;
         }
         
         .history-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
         }
         
         .history-item {
             background: rgba(253, 187, 45, 0.2);
-            padding: 8px 15px;
+            padding: 8px 14px;
             border-radius: 20px;
             font-size: 0.9rem;
+            min-width: 50px;
+            text-align: center;
         }
         
         .current-history-item {
@@ -230,52 +267,60 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .stat-item {
             text-align: center;
+            flex: 1;
+            min-width: 80px;
         }
         
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #fdbb2d;
+            margin-bottom: 5px;
         }
         
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #aaa;
         }
         
         .image-section {
-            margin-top: 30px;
+            margin-top: 25px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
         }
         
         .image-section h3 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #fdbb2d;
+            font-size: 1.2rem;
         }
         
         .current-image {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .image-placeholder {
-            width: 200px;
-            height: 200px;
+            width: 70vw;
+            height: 70vw;
+            max-width: 200px;
+            max-height: 200px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border: 3px solid rgba(253, 187, 45, 0.5);
             position: relative;
             overflow: hidden;
@@ -289,72 +334,223 @@
         }
         
         .image-info {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #ddd;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            line-height: 1.4;
         }
         
         .mapping-info {
-            margin-top: 20px;
+            margin-top: 15px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 15px;
+            padding: 12px;
         }
         
         .mapping-info h4 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #fdbb2d;
             text-align: center;
+            font-size: 1.1rem;
         }
         
         .mapping-details {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 8px;
         }
         
         .mapping-item {
             background: rgba(253, 187, 45, 0.2);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            min-width: 120px;
+            text-align: center;
         }
         
         .image-label {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
+            bottom: 8px;
+            left: 8px;
             background: rgba(0, 0, 0, 0.7);
-            padding: 5px 10px;
+            padding: 4px 10px;
             border-radius: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            z-index: 10;
         }
         
         .loading-text {
             color: #aaa;
             font-style: italic;
+            padding: 20px;
+            text-align: center;
         }
         
-        @media (max-width: 600px) {
-            .controls {
-                flex-direction: column;
-                gap: 15px;
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                border-radius: 12px;
             }
             
-            button {
-                width: 100%;
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 5px;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+            
+            .upload-section, .display-area, .image-section, .history, .mapping-info {
+                padding: 12px;
             }
             
             .current-value {
                 font-size: 2.5rem;
             }
             
-            .image-placeholder {
-                width: 150px;
-                height: 150px;
+            .mapped-value {
+                font-size: 1.4rem;
             }
+            
+            .image-placeholder {
+                width: 65vw;
+                height: 65vw;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+                min-height: 48px;
+            }
+            
+            .jump-input-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            #jump-btn {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .history-list {
+                display: flex;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .history-item {
+                flex-shrink: 0;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .stat-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+                min-width: auto;
+            }
+            
+            .stat-value {
+                margin-bottom: 0;
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 12px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            .current-value {
+                font-size: 2.2rem;
+            }
+            
+            .image-placeholder {
+                width: 75vw;
+                height: 75vw;
+                max-width: 180px;
+                max-height: 180px;
+            }
+            
+            .mapping-details {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .mapping-item {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .file-input-label, button {
+                font-size: 0.9rem;
+                padding: 12px 18px;
+            }
+        }
+        
+        /* 横屏模式优化 */
+        @media (min-width: 600px) and (orientation: landscape) {
+            .container {
+                max-width: 95%;
+            }
+            
+            .controls {
+                gap: 15px;
+            }
+            
+            .image-placeholder {
+                width: 40vh;
+                height: 40vh;
+                max-width: 180px;
+                max-height: 180px;
+            }
+            
+            .stats {
+                flex-direction: row;
+            }
+        }
+        
+        /* 防止长按菜单 */
+        button, .file-input-label {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* 改善输入框在iOS上的外观 */
+        input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
     </style>
 </head>
@@ -388,22 +584,24 @@
         </div>
         
         <div class="jump-controls">
-            <input type="number" id="jump-input" placeholder="Position" min="0">
-            <button id="jump-btn">Jump to Position</button>
+            <div class="jump-input-container">
+                <input type="number" id="jump-input" placeholder="Enter position" min="1">
+                <button id="jump-btn">Jump</button>
+            </div>
         </div>
         
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-value" id="min-value">-</div>
                 <div class="stat-label">Min Value</div>
+                <div class="stat-value" id="min-value">-</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="max-value">-</div>
                 <div class="stat-label">Max Value</div>
+                <div class="stat-value" id="max-value">-</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="unique-count">-</div>
                 <div class="stat-label">Unique Values</div>
+                <div class="stat-value" id="unique-count">-</div>
             </div>
         </div>
         
@@ -541,6 +739,7 @@
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = `Image ${imageNumber}`;
+                img.loading = "lazy";
                 img.onload = () => {
                     // Image loaded successfully
                     const label = document.createElement('div');
@@ -690,6 +889,9 @@
                 updateButtons();
                 updateHistory();
                 jumpInput.value = '';
+                
+                // 移动端：关闭键盘
+                jumpInput.blur();
             } else {
                 alert(`Please enter a valid position between 1 and ${pinSequence.length}`);
             }
@@ -745,6 +947,34 @@
             reader.readAsText(file);
         }
 
+        // Touch/swipe handling for mobile navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleTouchStart(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+
+        function handleTouchEnd(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }
+
+        function handleSwipe() {
+            const swipeThreshold = 50; // 最小滑动距离
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 向左滑动 - 下一个
+                    goToNext();
+                } else {
+                    // 向右滑动 - 上一个
+                    goToPrevious();
+                }
+            }
+        }
+
         // Event listeners
         fileInput.addEventListener('change', handleFileUpload);
         prevBtn.addEventListener('click', goToPrevious);
@@ -765,8 +995,24 @@
             }
         });
 
+        // Touch events for mobile swipe
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchend', handleTouchEnd, false);
+
+        // Prevent context menu on buttons
+        document.querySelectorAll('button, .file-input-label').forEach(el => {
+            el.addEventListener('contextmenu', (e) => e.preventDefault());
+        });
+
         // Initialize the application with empty data
         init();
+        
+        // 移动端：确保输入框在聚焦时页面不滚动太多
+        jumpInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                jumpInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
     </script>
 </body>
 </html>
