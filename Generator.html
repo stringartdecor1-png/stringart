@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Sequence Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+        
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .upload-section h3 {
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+        
+        .file-input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .file-input-label {
+            background: linear-gradient(to right, #1a2a6c, #4a54e1);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+        
+        .file-input-label:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .file-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .display-area {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .current-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #fdbb2d;
+            text-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .mapped-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #4a54e1;
+            text-shadow: 0 0 10px rgba(74, 84, 225, 0.5);
+        }
+        
+        .position-info {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-top: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .prev-btn {
+            background: linear-gradient(to right, #1a2a6c, #4a54e1);
+        }
+        
+        .next-btn {
+            background: linear-gradient(to right, #b21f1f, #fdbb2d);
+        }
+        
+        .jump-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .jump-controls input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 80px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .history {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .history h3 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #fdbb2d;
+        }
+        
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .history-item {
+            background: rgba(253, 187, 45, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .current-history-item {
+            background: rgba(253, 187, 45, 0.8);
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .image-section {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .image-section h3 {
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+        
+        .current-image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            border: 3px solid rgba(253, 187, 45, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .image-info {
+            font-size: 1rem;
+            color: #ddd;
+            margin-bottom: 5px;
+        }
+        
+        .mapping-info {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .mapping-info h4 {
+            margin-bottom: 10px;
+            color: #fdbb2d;
+            text-align: center;
+        }
+        
+        .mapping-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .mapping-item {
+            background: rgba(253, 187, 45, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .image-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .loading-text {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .current-value {
+                font-size: 2.5rem;
+            }
+            
+            .image-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pin Sequence Viewer</h1>
+        <p class="subtitle">Navigate through the pin sequence values with image mapping</p>
+        
+        <div class="upload-section">
+            <h3>Upload Pin Sequence File</h3>
+            <div class="file-input-container">
+                <label for="file-input" class="file-input-label">Choose File</label>
+                <input type="file" id="file-input" accept=".txt">
+                <div class="file-info" id="file-info">No file selected</div>
+            </div>
+        </div>
+        
+        <div class="display-area">
+            <div class="position-info">Current Position: <span id="position">0</span> of <span id="total">0</span></div>
+            <div class="current-value" id="current-value">-</div>
+            <div class="mapped-value">Maps to: <span id="mapped-value">-</span></div>
+        </div>
+        
+        <div class="controls">
+            <button class="prev-btn" id="prev-btn">
+                <span>◀ Previous</span>
+            </button>
+            <button class="next-btn" id="next-btn">
+                <span>Next ▶</span>
+            </button>
+        </div>
+        
+        <div class="jump-controls">
+            <input type="number" id="jump-input" placeholder="Position" min="0">
+            <button id="jump-btn">Jump to Position</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="min-value">-</div>
+                <div class="stat-label">Min Value</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="max-value">-</div>
+                <div class="stat-label">Max Value</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="unique-count">-</div>
+                <div class="stat-label">Unique Values</div>
+            </div>
+        </div>
+        
+        <div class="image-section">
+            <h3>Current Image</h3>
+            <div class="current-image">
+                <div class="image-placeholder" id="current-image-placeholder">
+                    <span class="loading-text">No data loaded</span>
+                </div>
+                <div class="image-info">Value Range: <span id="image-range">0-71</span></div>
+                <div class="image-info">Maps to: <span id="image-mapping">0-71</span></div>
+            </div>
+            
+            <div class="mapping-info">
+                <h4>Current Value Mapping</h4>
+                <div class="mapping-details">
+                    <div class="mapping-item">Original Value: <span id="original-value">-</span></div>
+                    <div class="mapping-item">Maps to Image: <span id="image-number">-</span></div>
+                    <div class="mapping-item">Position in Image: <span id="image-position">-</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history">
+            <h3>Recent Values</h3>
+            <div class="history-list" id="history-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Pin sequence data - will be loaded from file
+        let pinSequence = [];
+
+        // App state
+        let currentIndex = 0;
+        const historySize = 10;
+        let history = [];
+
+        // Image URLs - REPLACE THESE WITH YOUR ACTUAL IMAGE URLs
+        const imageUrls = {
+            1: "https://i.postimg.cc/tJgBtxdq/1.png",  // Replace with your Image 1 URL
+            2: "https://i.postimg.cc/C5KcHqCM/2.png",  // Replace with your Image 2 URL
+            3: "https://i.postimg.cc/Wz456kmV/3.png",  // Replace with your Image 3 URL
+            4: "https://i.postimg.cc/VvNKBC9Y/4.png"   // Replace with your Image 4 URL
+        };
+
+        // DOM elements
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.getElementById('file-info');
+        const currentValueEl = document.getElementById('current-value');
+        const positionEl = document.getElementById('position');
+        const totalEl = document.getElementById('total');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+        const historyListEl = document.getElementById('history-list');
+        const minValueEl = document.getElementById('min-value');
+        const maxValueEl = document.getElementById('max-value');
+        const uniqueCountEl = document.getElementById('unique-count');
+        const mappedValueEl = document.getElementById('mapped-value');
+        const originalValueEl = document.getElementById('original-value');
+        const imageNumberEl = document.getElementById('image-number');
+        const imagePositionEl = document.getElementById('image-position');
+        const currentImagePlaceholder = document.getElementById('current-image-placeholder');
+        const imageRange = document.getElementById('image-range');
+        const imageMapping = document.getElementById('image-mapping');
+
+        // Initialize the app
+        function init() {
+            totalEl.textContent = pinSequence.length;
+            updateStats();
+            updateDisplay();
+            updateButtons();
+            updateHistory();
+        }
+
+        // Calculate mapped value based on the requested mapping
+        function calculateMappedValue(value) {
+            if (value >= 0 && value <= 71) {
+                return value; // Map 0-71 to 0-71
+            } else if (value >= 72 && value <= 143) {
+                return value - 72; // Map 72-143 to 0-71
+            } else if (value >= 144 && value <= 215) {
+                return value - 144; // Map 144-215 to 0-71
+            } else if (value >= 216 && value <= 287) {
+                return value - 216; // Map 216-287 to 0-71
+            }
+            return value; // Fallback
+        }
+
+        // Determine which image the value belongs to
+        function getImageNumber(value) {
+            if (value >= 0 && value <= 71) {
+                return 1;
+            } else if (value >= 72 && value <= 144) {
+                return 2;
+            } else if (value >= 145 && value <= 216) {
+                return 3;
+            } else if (value >= 217 && value <= 287) {
+                return 4;
+            }
+            return 0;
+        }
+
+        // Get image range and mapping info
+        function getImageInfo(imageNumber) {
+            switch(imageNumber) {
+                case 1:
+                    return { range: "0-71", mapping: "0-71" };
+                case 2:
+                    return { range: "72-144", mapping: "0-71" };
+                case 3:
+                    return { range: "145-216", mapping: "0-71" };
+                case 4:
+                    return { range: "217-287", mapping: "0-71" };
+                default:
+                    return { range: "Unknown", mapping: "Unknown" };
+            }
+        }
+
+        // Update the image display
+        function updateImageDisplay(imageNumber) {
+            const imageUrl = imageUrls[imageNumber];
+            const imageInfo = getImageInfo(imageNumber);
+            
+            // Clear the placeholder
+            currentImagePlaceholder.innerHTML = '';
+            
+            imageRange.textContent = imageInfo.range;
+            imageMapping.textContent = imageInfo.mapping;
+            
+            if (imageUrl && imageUrl !== "https://example.com/image1.jpg") {
+                // Create and add the actual image
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `Image ${imageNumber}`;
+                img.onload = () => {
+                    // Image loaded successfully
+                    const label = document.createElement('div');
+                    label.className = 'image-label';
+                    label.textContent = `Image ${imageNumber}`;
+                    currentImagePlaceholder.appendChild(label);
+                };
+                img.onerror = () => {
+                    // Image failed to load, show placeholder
+                    showImagePlaceholder(imageNumber);
+                };
+                currentImagePlaceholder.appendChild(img);
+            } else {
+                // Show placeholder if no valid URL
+                showImagePlaceholder(imageNumber);
+            }
+            
+            // Update image placeholder background color based on image number
+            const colors = [
+                'rgba(253, 187, 45, 0.3)', // Image 1
+                'rgba(74, 84, 225, 0.3)',  // Image 2
+                'rgba(178, 31, 31, 0.3)',  // Image 3
+                'rgba(26, 42, 108, 0.3)'   // Image 4
+            ];
+            currentImagePlaceholder.style.background = colors[imageNumber - 1] || 'rgba(255, 255, 255, 0.1)';
+        }
+
+        // Show placeholder when no image is available
+        function showImagePlaceholder(imageNumber) {
+            currentImagePlaceholder.innerHTML = `
+                <span>Image ${imageNumber}</span>
+                <div class="image-label">Image ${imageNumber}</div>
+            `;
+        }
+
+        // Update the display with current value
+        function updateDisplay() {
+            if (pinSequence.length === 0) {
+                currentValueEl.textContent = "-";
+                positionEl.textContent = "0";
+                mappedValueEl.textContent = "-";
+                originalValueEl.textContent = "-";
+                imageNumberEl.textContent = "-";
+                imagePositionEl.textContent = "-";
+                currentImagePlaceholder.innerHTML = '<span class="loading-text">No data loaded</span>';
+                return;
+            }
+            
+            const currentValue = pinSequence[currentIndex];
+            const mappedValue = calculateMappedValue(currentValue);
+            const imageNumber = getImageNumber(currentValue);
+            
+            currentValueEl.textContent = currentValue;
+            positionEl.textContent = currentIndex + 1;
+            mappedValueEl.textContent = mappedValue;
+            originalValueEl.textContent = currentValue;
+            imageNumberEl.textContent = imageNumber;
+            imagePositionEl.textContent = mappedValue;
+            
+            // Update current image display
+            updateImageDisplay(imageNumber);
+        }
+
+        // Update button states based on current position
+        function updateButtons() {
+            prevBtn.disabled = currentIndex === 0 || pinSequence.length === 0;
+            nextBtn.disabled = currentIndex === pinSequence.length - 1 || pinSequence.length === 0;
+            jumpBtn.disabled = pinSequence.length === 0;
+        }
+
+        // Update the history display
+        function updateHistory() {
+            if (pinSequence.length === 0) {
+                historyListEl.innerHTML = '<div class="history-item">No data</div>';
+                return;
+            }
+            
+            // Add current value to history if not already there
+            if (history.length === 0 || history[history.length-1] !== currentIndex) {
+                history.push(currentIndex);
+                
+                // Keep only the last historySize items
+                if (history.length > historySize) {
+                    history.shift();
+                }
+            }
+            
+            // Update history display
+            historyListEl.innerHTML = '';
+            history.forEach((index, i) => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                if (index === currentIndex) {
+                    item.classList.add('current-history-item');
+                }
+                item.textContent = pinSequence[index];
+                historyListEl.appendChild(item);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            if (pinSequence.length === 0) {
+                minValueEl.textContent = "-";
+                maxValueEl.textContent = "-";
+                uniqueCountEl.textContent = "-";
+                return;
+            }
+            
+            const min = Math.min(...pinSequence);
+            const max = Math.max(...pinSequence);
+            const unique = new Set(pinSequence).size;
+            
+            minValueEl.textContent = min;
+            maxValueEl.textContent = max;
+            uniqueCountEl.textContent = unique;
+        }
+
+        // Navigate to the previous value
+        function goToPrevious() {
+            if (currentIndex > 0 && pinSequence.length > 0) {
+                currentIndex--;
+                updateDisplay();
+                updateButtons();
+                updateHistory();
+            }
+        }
+
+        // Navigate to the next value
+        function goToNext() {
+            if (currentIndex < pinSequence.length - 1 && pinSequence.length > 0) {
+                currentIndex++;
+                updateDisplay();
+                updateButtons();
+                updateHistory();
+            }
+        }
+
+        // Jump to a specific position
+        function jumpToPosition() {
+            if (pinSequence.length === 0) return;
+            
+            const position = parseInt(jumpInput.value);
+            if (!isNaN(position) && position >= 1 && position <= pinSequence.length) {
+                currentIndex = position - 1;
+                updateDisplay();
+                updateButtons();
+                updateHistory();
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid position between 1 and ${pinSequence.length}`);
+            }
+        }
+
+        // Parse the uploaded file
+        function parseFile(content) {
+            try {
+                // Try to parse as comma-separated values
+                const values = content.split(',').map(val => {
+                    const parsed = parseInt(val.trim());
+                    return isNaN(parsed) ? null : parsed;
+                }).filter(val => val !== null);
+                
+                if (values.length > 0) {
+                    return values;
+                }
+                
+                // If that fails, try to parse as space-separated values
+                const spaceValues = content.split(/\s+/).map(val => {
+                    const parsed = parseInt(val.trim());
+                    return isNaN(parsed) ? null : parsed;
+                }).filter(val => val !== null);
+                
+                return spaceValues;
+            } catch (error) {
+                console.error('Error parsing file:', error);
+                return [];
+            }
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            fileInfo.textContent = `Selected: ${file.name}`;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                pinSequence = parseFile(content);
+                
+                if (pinSequence.length > 0) {
+                    currentIndex = 0;
+                    history = [];
+                    init();
+                    alert(`Successfully loaded ${pinSequence.length} values from file`);
+                } else {
+                    alert('Could not parse any valid numbers from the file');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Event listeners
+        fileInput.addEventListener('change', handleFileUpload);
+        prevBtn.addEventListener('click', goToPrevious);
+        nextBtn.addEventListener('click', goToNext);
+        jumpBtn.addEventListener('click', jumpToPosition);
+        jumpInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                jumpToPosition();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                goToPrevious();
+            } else if (e.key === 'ArrowRight') {
+                goToNext();
+            }
+        });
+
+        // Initialize the application with empty data
+        init();
+    </script>
+</body>
+</html>
