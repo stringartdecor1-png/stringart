@@ -356,37 +356,6 @@
             line-height: 1.4;
         }
         
-        .mapping-info {
-            margin-top: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 12px;
-        }
-        
-        .mapping-info h4 {
-            margin-bottom: 8px;
-            color: #fdbb2d;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        
-        .mapping-details {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        
-        .mapping-item {
-            background: rgba(253, 187, 45, 0.2);
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            min-width: 120px;
-            text-align: center;
-        }
-        
         .image-label {
             position: absolute;
             bottom: 8px;
@@ -626,15 +595,6 @@
                         <div class="image-info">Value Range: <span id="image-range">0-71</span></div>
                         <div class="image-info">Maps to: <span id="image-mapping">0-71</span></div>
                     </div>
-                    
-                    <div class="mapping-info">
-                        <h4>Current Value Mapping</h4>
-                        <div class="mapping-details">
-                            <div class="mapping-item">Original Value: <span id="original-value">-</span></div>
-                            <div class="mapping-item">Maps to Image: <span id="image-number">-</span></div>
-                            <div class="mapping-item">Position in Image: <span id="image-position">-</span></div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="display-area">
@@ -719,9 +679,6 @@
         const maxValueEl = document.getElementById('max-value');
         const uniqueCountEl = document.getElementById('unique-count');
         const mappedValueEl = document.getElementById('mapped-value');
-        const originalValueEl = document.getElementById('original-value');
-        const imageNumberEl = document.getElementById('image-number');
-        const imagePositionEl = document.getElementById('image-position');
         const currentImagePlaceholder = document.getElementById('current-image-placeholder');
         const imageRange = document.getElementById('image-range');
         const imageMapping = document.getElementById('image-mapping');
@@ -841,9 +798,6 @@
                 currentValueEl.textContent = "-";
                 positionEl.textContent = "0";
                 mappedValueEl.textContent = "-";
-                originalValueEl.textContent = "-";
-                imageNumberEl.textContent = "-";
-                imagePositionEl.textContent = "-";
                 currentImagePlaceholder.innerHTML = '<span class="loading-text">No data loaded</span>';
                 return;
             }
@@ -855,9 +809,6 @@
             currentValueEl.textContent = currentValue;
             positionEl.textContent = currentIndex + 1;
             mappedValueEl.textContent = mappedValue;
-            originalValueEl.textContent = currentValue;
-            imageNumberEl.textContent = imageNumber;
-            imagePositionEl.textContent = mappedValue;
             
             // Update current image display
             updateImageDisplay(imageNumber);
