@@ -534,6 +534,7 @@
                     </div>
                 </div>
                 
+                <!-- Removed the entire range-info section with number displays -->
                 
                 <div class="current-sequence">
                     <p>Sequence File: <span id="sequenceName">Sample Sequence</span></p>
@@ -612,12 +613,7 @@
         
         // DOM elements
         const centerValueElement = document.getElementById('centerValue');
-        const currentNumberElement = document.getElementById('currentNumber');
-        const previousNumberElement = document.getElementById('previousNumber');
-        const nextNumberElement = document.getElementById('nextNumber');
-        const currentSectionElement = document.getElementById('currentSection');
-        const positionInSectionElement = document.getElementById('positionInSection');
-        const angleValueElement = document.getElementById('angleValue');
+        // Removed number display elements: currentNumberElement, previousNumberElement, nextNumberElement, currentSectionElement, positionInSectionElement
         const positionInput = document.getElementById('positionInput');
         const goToBtn = document.getElementById('goToBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -741,10 +737,7 @@
             const previousNumber = currentSequence[previousIndex];
             const nextNumber = currentSequence[nextIndex];
             
-            // Update number displays
-            currentNumberElement.textContent = currentNumber;
-            previousNumberElement.textContent = previousNumber;
-            nextNumberElement.textContent = nextNumber;
+            // Removed number display updates
             
             // Calculate angles for all three numbers
             const currentAngleData = calculateAngleForNumber(currentNumber);
@@ -777,32 +770,23 @@
         
         // Update other visual elements (center display, etc.)
         function updateVisualElements(number, angleData) {
-            const { angle, positionInSection } = angleData;
-            
-            // Determine which section the number belongs to
-            let section, sectionName;
-            
-            if (number <= 71) {
-                section = 1;
-                sectionName = "Section 1";
-            } else if (number <= 143) {
-                section = 2;
-                sectionName = "Section 2";
-            } else if (number <= 215) {
-                section = 3;
-                sectionName = "Section 3";
-            } else {
-                section = 4;
-                sectionName = "Section 4";
-            }
+            const { positionInSection } = angleData;
             
             // Update center to show position within section
             centerValueElement.textContent = positionInSection;
             
-            // Update section and position displays
-            currentSectionElement.textContent = sectionName;
-            positionInSectionElement.textContent = positionInSection;
-            angleValueElement.textContent = `${Math.round(angle)}°`;
+            // Determine which section the number belongs to
+            let section;
+            
+            if (number <= 71) {
+                section = 1;
+            } else if (number <= 143) {
+                section = 2;
+            } else if (number <= 215) {
+                section = 3;
+            } else {
+                section = 4;
+            }
             
             // Highlight the corresponding quadrant
             document.querySelectorAll('.quadrant').forEach(quadrant => {
@@ -976,11 +960,6 @@
             const coords = getCoordinatesForAngle(angleData.angle);
             intersectionPointElement = createIntersectionPoint(coords);
             document.querySelector('.circle').appendChild(intersectionPointElement);
-            
-            // Update number displays
-            currentNumberElement.textContent = number;
-            previousNumberElement.textContent = '-';
-            nextNumberElement.textContent = '-';
             
             // Update visual elements
             updateVisualElements(number, angleData);
